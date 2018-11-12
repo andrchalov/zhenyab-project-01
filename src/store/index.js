@@ -29,8 +29,7 @@ export default new Vuex.Store({
     account: accountModule
   },
   state: {
-    // accessToken: null,
-    accessToken: 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNTQyMDQxNTI2LCJleHAiOjE1NDIxMjc5MjZ9.FrhwQTtgn8ookt73Bm63iDx0omU9JbG0zoKLWb5IQBfwLoHlaEDe9acXCV9ev0t1IT3txVmYzD7IHDAbIQ7PUw',
+    accessToken: null,
     country: 'US',
     language: 'en',
     tokenType: null
