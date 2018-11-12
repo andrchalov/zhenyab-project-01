@@ -1,10 +1,19 @@
 <template>
-  <router-view></router-view>
+  <div>
+    <div v-if="loaded">
+      <router-view></router-view>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  data() {
+    return {
+      loaded: true
+    }
+  }
 }
 </script>
 

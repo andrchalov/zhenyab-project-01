@@ -39,13 +39,19 @@
     "@vue/cli-plugin-unit-jest": "^3.0.5",
     "@vue/cli-service": "^3.0.5",
     "@vue/test-utils": "^1.0.0-beta.25",
+    "axios": "^0.18.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
     "growl": "^1.10.5",
     "https-proxy-agent": "^2.2.1",
     "node-sass": "^4.9.4",
     "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.5.17"
+    "velocity-animate": "^1.5.2",
+    "vue-moment": "^4.0.0",
+    "vue-template-compiler": "^2.5.17",
+    "vue2-notify": "^1.4.0",
+    "vuejs-datepicker": "^1.5.4",
+    "vuex": "^3.0.1"
   },
   "browserslist": [
     "> 1%",
