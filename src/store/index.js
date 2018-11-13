@@ -27,8 +27,8 @@ const store = new Vuex.Store({
     user: userModule
   },
   state: {
-    // accessToken: null,
-    accessToken: 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNTQyMTQyMjQ2LCJleHAiOjE1NDIyMjg2NDZ9.uZP1QKSrfCNxBti_t1GkTgQkqt4JfZtgeK5wUprccbtDeYxizBhN4pQ0a7GDlGCSbIJWOTUFX0w-SwaZS-il5A',
+    accessToken: null,
+    // accessToken: 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNTQyMTQyMjQ2LCJleHAiOjE1NDIyMjg2NDZ9.uZP1QKSrfCNxBti_t1GkTgQkqt4JfZtgeK5wUprccbtDeYxizBhN4pQ0a7GDlGCSbIJWOTUFX0w-SwaZS-il5A',
     country: 'US',
     language: 'en',
     tokenType: null
