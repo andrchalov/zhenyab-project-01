@@ -1,8 +1,8 @@
 <template lang="html">
-  <b-modal :id="id" ref="modal" title="Add account" @ok="ok" @hidden="hidden">
+  <b-modal ref="modal" id="editAccount" :title="title" @shown="shown" @ok="ok" @hidden="hidden">
     <b-form @submit="submit" @reset="reset">
       <b-form-group label="Name:">
-        <b-form-input type="text" v-model="form.username"></b-form-input>
+        <b-form-input type="text" v-model="form.name"></b-form-input>
       </b-form-group>
       <b-form-group label="Expired at:">
         <datepicker v-model="expiredAtDate" format="yyyy-MM-dd" style="width: 200px;"></datepicker>
@@ -31,7 +31,11 @@ export default {
   props: {
     id: {
       type: String,
-      required: true
+      default: 'editAccount'
+    },
+    account: {
+      type: Object,
+      default: null
     }
   },
   components: {
@@ -40,19 +44,30 @@ export default {
   data() {
     return {
       form: {
-        username: null,
+        name: null,
         expiredAt: null,
         amount: 0,
         isEnabled: true
       },
-      expiredAtDate: '2018-01-01',
+      expiredAtDate: null,
       error: null
+    }
+  },
+  computed: {
+    title() {
+      return this.account ? 'Edit account' : 'Add account'
     }
   },
   created() {
 
   },
   methods: {
+    shown() {
+      if (this.account) {
+        Object.assign(this.form, this.account)
+        this.expiredAtDate = this.account.expiredAt
+      }
+    },
     ok(evt) {
       evt.preventDefault()
       this.submit()
@@ -63,11 +78,23 @@ export default {
     submit() {
       this.error = null
       this.form.expiredAt = Vue.moment(this.expiredAtDate).format('YYYY-MM-DD')
-      this.$store.dispatch('account/add', this.form)
+
+      this
+        .sendForm()
         .then(
-          () => this.$refs.modal.hide(),
+          () => {
+            this.$store.dispatch('account/fetch')
+            this.$refs.modal.hide()
+          },
           (error) => this.error = error.response.data.message
         )
+    },
+    sendForm() {
+      if (this.account) {
+        return this.$store.dispatch('account/edit', this.form)
+      } else {
+        return this.$store.dispatch('account/add', this.form)
+      }
     },
     reset() {
       Object.assign(this.$data, this.$options.data())

@@ -1,1 +1,45 @@
 // Here you can add other styles
+
+/* Animations */
+
+.rotate {
+  -webkit-animation-name: rotateThis;
+     -moz-animation-name: rotateThis;
+      -ms-animation-name: rotateThis;
+       -o-animation-name: rotateThis;
+
+  -webkit-animation-duration: 2s;
+     -moz-animation-duration: 2s;
+      -ms-animation-duration: 2s;
+       -o-animation-duration: 2s;
+
+  -webkit-animation-iteration-count: infinite;
+     -moz-animation-iteration-count: infinite;
+      -ms-animation-iteration-count: infinite;
+       -o-animation-iteration-count: infinite;
+
+  -webkit-animation-timing-function: linear;
+     -moz-animation-timing-function: linear;
+      -ms-animation-timing-function: linear;
+       -o-animation-timing-function: linear;
+}
+
+@-webkit-keyframes rotateThis {
+  from { -webkit-transform: rotate( 0deg ); }
+  to   { -webkit-transform: rotate( 360deg ); }
+}
+
+@-moz-keyframes rotateThis {
+  from { -moz-transform: rotate( 0deg ); }
+  to   { -moz-transform: rotate( 360deg ); }
+}
+
+@-o-keyframes rotateThis {
+  from { -o-transform: rotate( 0deg ); }
+  to   { -o-transform: rotate( 360deg ); }
+}
+
+@keyframes rotateThis {
+  from { transform: rotate( 0deg ); }
+  to   { transform: rotate( 360deg ); }
+}

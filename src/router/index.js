@@ -6,8 +6,10 @@ import store from '@/store'
 const DefaultContainer = () => import('@/containers/DefaultContainer')
 
 // Views
-const Accounts = () => import('@/views/Accounts')
 const Login = () => import('@/views/Login')
+const Accounts = () => import('@/views/Accounts')
+const Users = () => import('@/views/Users')
+
 
 Vue.use(Router)
 
@@ -34,6 +36,11 @@ const router = new Router({
           meta: {
             requiresAuth: true
           }
+        },
+        {
+          path: '/account/:account_id/users',
+          name: 'Users',
+          component: Users
         }
       ]
     }

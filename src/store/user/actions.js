@@ -1,16 +1,16 @@
 import axios from 'axios'
 
-const fetch = ({commit}) => {
-  return axios.get('/account')
+const fetch = ({}, {account_id}) => {
+  return axios.get('/account/users/'+account_id)
     .then(
       response => {
-        commit('LIST_UPDATED', response.data)
+        return response.data
       }
     )
 }
 
 const add = ({dispatch}, data) => {
-  return axios.post('/account', data)
+  return axios.post('/user', data)
     .then(
       response => {
         dispatch('fetch')
@@ -19,7 +19,7 @@ const add = ({dispatch}, data) => {
 }
 
 const edit = ({dispatch}, data) => {
-  return axios.put('/account', data)
+  return axios.put('/user', data)
     .then(
       response => {
         dispatch('fetch')

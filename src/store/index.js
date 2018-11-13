@@ -2,34 +2,33 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import axios from 'axios'
-
 import accountModule from './account'
+import userModule from './user'
 
 Vue.use(Vuex)
 
 axios.defaults.baseURL = process.env['VUE_APP_API_URL']
-axios.defaults.headers['Content-Type'] = 'multipart/form-data'
 
-axios.defaults.transformRequest = [
-  function(data, headers) {
-    if (data && headers['Content-Type'] == 'multipart/form-data') {
-      let formData = new FormData();
-      Object.keys(data).forEach(attr => {
-        formData.append(attr, data[attr]);
-      });
-      return formData;
-    } else {
-      return data
+axios.interceptors.request.use(
+  config => {
+    if (store.state.accessToken) {
+      config.headers['Authorization'] = 'Bearer '+store.state.accessToken
+      config.headers['Accept-Language'] = store.state.language+'_'+store.state.country
     }
-  }
-]
 
-export default new Vuex.Store({
+    return config
+  },
+  error => Promise.reject(error)
+);
+
+const store = new Vuex.Store({
   modules: {
-    account: accountModule
+    account: accountModule,
+    user: userModule
   },
   state: {
-    accessToken: null,
+    // accessToken: null,
+    accessToken: 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNTQyMTQyMjQ2LCJleHAiOjE1NDIyMjg2NDZ9.uZP1QKSrfCNxBti_t1GkTgQkqt4JfZtgeK5wUprccbtDeYxizBhN4pQ0a7GDlGCSbIJWOTUFX0w-SwaZS-il5A',
     country: 'US',
     language: 'en',
     tokenType: null
@@ -41,12 +40,23 @@ export default new Vuex.Store({
     tokenType: state => state.tokenType
   },
   actions: {
-    init({state}) {
-      axios.defaults.headers['Authorization'] = 'Bearer '+state.accessToken
-      axios.defaults.headers['Accept-Language'] = state.language+'_'+state.country
-    },
     login({commit}, data) {
-      return axios.post('/auth/login', data)
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        transformRequest: [
+          function(data, headers) {
+            let formData = new FormData();
+            Object.keys(data).forEach(attr => {
+              formData.append(attr, data[attr]);
+            });
+            return formData;
+          }
+        ]
+      }
+
+      return axios.post('/auth/login', data, config)
         .then(
           response => {
             commit('LOGGED_IN', response.data)
@@ -66,3 +76,5 @@ export default new Vuex.Store({
     }
   }
 })
+
+export default store
