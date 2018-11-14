@@ -4,7 +4,7 @@
       <div>
         <b-btn @click="addAccount" variant="primary" class="mb-3">
           <i class="fa fa-plus fa-lg mr-1"></i>
-          Add account
+          {{$t("add_account")}}
         </b-btn>
         <b-btn class="pull-right" size="sm" @click="fetch">
           <i class="fa fa-refresh fa-lg" :class="{'rotate': busy}"></i>
@@ -12,8 +12,8 @@
       </div>
 
       <b-form inline class="mb-4">
-        <div class="mr-2">Filter:</div>
-        <b-form-input type="text" v-model="filter.name" placeholder="Name"></b-form-input>
+        <div class="mr-2">{{$t('filter')}}:</div>
+        <b-form-input type="text" v-model="filter.name" :placeholder="$t('name')"></b-form-input>
       </b-form>
 
       <b-table
@@ -28,15 +28,24 @@
         hover
       >
         <template slot="enabled" slot-scope="data">
-          {{data.value ? 'yes': 'no'}}
+          {{data.value ? $t('yes'): $t('no')}}
         </template>
         <template slot="actions" slot-scope="data">
-          <b-btn @click.stop="editAccount(data.item)" size="sm" variant="primary">Edit</b-btn>
+          <b-btn @click.stop="editAccount(data.item)" size="sm" variant="primary">
+            <i class="fa fa-pencil fa-lg"></i>
+          </b-btn>
         </template>
       </b-table>
 
       <nav>
-        <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" prev-text="Prev" next-text="Next" hide-goto-end-buttons/>
+        <b-pagination
+          :total-rows="totalRows"
+          :per-page="perPage"
+          v-model="currentPage"
+          :prev-text="$t('prev_short')"
+          :next-text="$t('next_short')"
+          hide-goto-end-buttons
+        />
       </nav>
     </b-card>
     <edit-account :account="editAccountData"></edit-account>
@@ -55,11 +64,11 @@
       return {
         fields: [
           {key: 'id', label: 'ID', sortable: true},
-          {key: 'name', label: 'Name', sortable: true},
-          {key: 'amount', label: 'Amount', sortable: true},
-          {key: 'expiredAt', label: 'Expired at', sortable: true},
-          {key: 'enabled', label: 'Enabled', sortable: true},
-          {key: 'actions', label: 'Actions'}
+          {key: 'name', label: this.$t('name'), sortable: true},
+          {key: 'amount', label: this.$t('devices_amount'), sortable: true},
+          {key: 'expiredAt', label: this.$t('expired_at'), sortable: true},
+          {key: 'enabled', label: this.$t('enabled'), sortable: true},
+          {key: 'actions', label: this.$t('actions')}
         ],
         perPage: 50,
         currentPage: 1,

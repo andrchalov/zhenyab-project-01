@@ -14,7 +14,7 @@
           variant="secondary"
           size="sm"
           v-b-tooltip.hover
-          title="Logout"
+          :title="$t('logout')"
         >
           <i class="fa fa-sign-out fa-lg"></i>
         </b-btn>

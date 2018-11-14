@@ -1,16 +1,25 @@
 <template lang="html">
-  <b-modal ref="modal" id="editAccount" :title="title" @shown="shown" @ok="ok" @hidden="hidden">
+  <b-modal
+    ref="modal"
+    id="editAccount"
+    :title="title"
+    :ok-title="$t('save')"
+    :cancel-title="$t('cancel')"
+    @shown="shown"
+    @ok="ok"
+    @hidden="hidden"
+  >
     <b-form @submit="submit" @reset="reset">
-      <b-form-group label="Name:">
+      <b-form-group :label="$t('name')+':'">
         <b-form-input type="text" v-model="form.name"></b-form-input>
       </b-form-group>
-      <b-form-group label="Expired at:">
+      <b-form-group :label="$t('expired_at')+':'">
         <datepicker v-model="expiredAtDate" format="yyyy-MM-dd" style="width: 200px;"></datepicker>
       </b-form-group>
-      <b-form-group label="Devices amount:">
+      <b-form-group :label="$t('devices_amount')+':'">
         <b-form-input type="number" v-model="form.amount" style="width: 200px"></b-form-input>
       </b-form-group>
-      <b-form-group label="Blocked:">
+      <b-form-group :label="$t('blocked')+':'">
         <b-form-checkbox
            v-model="form.enabled"
            value="false"
@@ -55,7 +64,7 @@ export default {
   },
   computed: {
     title() {
-      return this.account ? 'Edit account' : 'Add account'
+      return this.account ? this.$t('edit_account') : this.$t('add_account')
     }
   },
   methods: {

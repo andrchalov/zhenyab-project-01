@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '@/store'
+import {i18n} from '@/i18n-setup'
 
 // Containers
 const DefaultContainer = () => import('@/containers/DefaultContainer')
@@ -9,7 +10,6 @@ const DefaultContainer = () => import('@/containers/DefaultContainer')
 const Login = () => import('@/views/Login')
 const Accounts = () => import('@/views/Accounts')
 const Users = () => import('@/views/Users')
-
 
 Vue.use(Router)
 
@@ -34,7 +34,7 @@ const router = new Router({
       children: [
         {
           path: 'accounts',
-          meta: { label: 'Accounts'},
+          meta: { label: i18n.t('accounts') },
           component: {
             render (c) { return c('router-view') }
           },
@@ -70,7 +70,6 @@ router.beforeEach((to, from, next) => {
       next()
     }
   } else if(to.matched.some(record => record.meta.guest)) {
-    console.log(store.getters['auth/accessToken'])
     if(!store.getters['auth/accessToken']){
       next()
     } else {

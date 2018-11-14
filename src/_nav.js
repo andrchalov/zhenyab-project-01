@@ -1,7 +1,9 @@
+import {i18n} from '@/i18n-setup'
+
 export default {
   items: [
     {
-      name: 'Accounts',
+      name: i18n.t('accounts'),
       url: '/accounts',
       icon: 'icon-people'
     }

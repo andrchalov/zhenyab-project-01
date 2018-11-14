@@ -1,38 +1,47 @@
 <template lang="html">
-  <b-modal ref="modal" id="editUser" :title="title" @shown="shown" @ok="ok" @hidden="hidden">
+  <b-modal
+    ref="modal"
+    id="editUser"
+    :title="title"
+    :ok-title="$t('save')"
+    :cancel-title="$t('cancel')"
+    @shown="shown"
+    @ok="ok"
+    @hidden="hidden"
+  >
     <b-form @submit="submit" @reset="reset">
-      <b-form-group label="Username:">
+      <b-form-group :label="$t('username')+':'">
         <b-form-input type="text" v-model="form.username" :state="errors && !errors['username']"></b-form-input>
         <b-form-invalid-feedback v-if="errors">
           {{errors['username']}}
         </b-form-invalid-feedback>
       </b-form-group>
-      <b-form-group label="Password:">
+      <b-form-group :label="$t('password')+':'">
         <b-form-input type="password" v-model="form.password" :state="errors && !errors['password']"></b-form-input>
         <b-form-invalid-feedback v-if="errors">
           {{errors['password']}}
         </b-form-invalid-feedback>
       </b-form-group>
-      <b-form-group label="Name:">
+      <b-form-group :label="$t('name')+':'">
         <b-form-input type="text" v-model="form.name" :state="errors && !errors['name']"></b-form-input>
         <b-form-invalid-feedback v-if="errors">
           {{errors['name']}}
         </b-form-invalid-feedback>
       </b-form-group>
-      <b-form-group label="Locale:">
+      <b-form-group :label="$t('locale')+':'">
         <b-form-select :plain="true" size="lg" v-model="form.locale" :options="localeOptions" class="mb-3"  :state="errors && !errors['locale']"/>
         <b-form-invalid-feedback v-if="errors">
           {{errors['locale']}}
         </b-form-invalid-feedback>
       </b-form-group>
-      <b-form-group label="Enabled:">
+      <b-form-group :label="$t('enabled')+':'">
         <b-form-checkbox
            v-model="form.enabled"
            value="true"
            unchecked-value="false">
         </b-form-checkbox>
       </b-form-group>
-      <b-form-group label="Role:">
+      <b-form-group :label="$t('role')+':'">
         <b-form-select :plain="true" size="lg" v-model="form.role" :options="roleOptions" class="mb-3" />
       </b-form-group>
 
@@ -92,7 +101,7 @@
     },
     computed: {
       title() {
-        return this.user ? 'Edit user' : 'Add user'
+        return this.user ? this.$t('edit_user') : this.$t('add_user')
       }
     },
     methods: {

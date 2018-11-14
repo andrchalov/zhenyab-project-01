@@ -2,12 +2,12 @@
   <div class="users">
     <b-card>
       <template slot="header">
-        <i class="cui-user"></i>Account #{{ account_id }} Users
+        <i class="cui-user"></i>{{$t('account')}} #{{ account_id }} {{$t('users')}}
       </template>
 
       <b-btn @click="addUser" variant="primary" class="mb-3">
         <i class="fa fa-plus fa-lg mr-1"></i>
-        Add user
+        {{$t('add_user')}}
       </b-btn>
 
       <b-btn class="pull-right" size="sm" @click="fetch">
@@ -15,12 +15,12 @@
       </b-btn>
 
       <b-form inline class="mb-4">
-        <div class="mr-2">Filter:</div>
-        <b-form-input type="text" v-model="filter.username" placeholder="Username" class="mr-2"></b-form-input>
-        <b-form-input type="text" v-model="filter.name" placeholder="Name" class="mr-2"></b-form-input>
-        <b-form-input type="text" v-model="filter.language" placeholder="Language" class="mr-2"></b-form-input>
-        <b-form-input type="text" v-model="filter.created" placeholder="Created" class="mr-2"></b-form-input>
-        <b-btn @click="filter = {}">reset</b-btn>
+        <div class="mr-2 mb-2">{{$t('filter')}}:</div>
+        <b-form-input type="text" v-model="filter.username" :placeholder="$t('username')" class="mr-2 mb-2"></b-form-input>
+        <b-form-input type="text" v-model="filter.name" :placeholder="$t('name')" class="mr-2 mb-2"></b-form-input>
+        <b-form-input type="text" v-model="filter.language" :placeholder="$t('language')" class="mr-2 mb-2"></b-form-input>
+        <b-form-input type="text" v-model="filter.created" :placeholder="$t('created')" class="mr-2 mb-2"></b-form-input>
+        <b-btn @click="filter = {}" class="mb-2">{{$t('reset')}}</b-btn>
       </b-form>
 
       <b-table
@@ -31,21 +31,34 @@
         :sort-by.sync="sortBy"
         :striped="true"
         :filter="filterHandler"
+        responsive="true"
+        fixed="true"
         hover
       >
         <template slot="enabled" slot-scope="data">
-          {{data.value ? 'yes': 'no'}}
+          {{data.value ? $t('yes'): $t('no')}}
         </template>
         <template slot="actions" slot-scope="data">
           <div style="white-space: nowrap">
-            <b-btn @click.stop="editUser(data.item)" variant="primary" size="sm">Edit</b-btn>
-            <b-btn @click.stop="removeUser(data.item)" variant="danger" size="sm" class="ml-2">Delete</b-btn>
+            <b-btn @click.stop="editUser(data.item)" variant="primary" size="sm">
+              <i class="fa fa-pencil fa-lg"></i>
+            </b-btn>
+            <b-btn @click.stop="removeUser(data.item)" variant="danger" size="sm" class="ml-2">
+              <i class="fa fa-remove fa-lg"></i>
+            </b-btn>
           </div>
         </template>
       </b-table>
 
       <nav>
-        <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" prev-text="Prev" next-text="Next" hide-goto-end-buttons/>
+        <b-pagination
+          :total-rows="totalRows"
+          :per-page="perPage"
+          v-model="currentPage"
+          :prev-text="$t('prev_short')"
+          :next-text="$t('next_short')"
+          hide-goto-end-buttons
+        />
       </nav>
     </b-card>
     <div v-if="account_id">
@@ -67,15 +80,15 @@
         account_id: null,
         fields: [
           {key: 'id', label: 'ID', sortable: true},
-          {key: 'username', label: 'Username', sortable: true},
-          {key: 'name', label: 'Name', sortable: true},
-          {key: 'language', label: 'Language', sortable: true},
-          {key: 'isEnabled', label: 'Enabled', sortable: true},
-          {key: 'role', label: 'Role', sortable: true},
-          {key: 'createdAt', label: 'Created', sortable: true},
-          {key: 'updatedAt', label: 'Updated', sortable: true},
-          {key: 'loggedAt', label: 'Logged', sortable: true},
-          {key: 'actions', label: 'Actions'}
+          {key: 'username', label: this.$t('username'), sortable: true},
+          {key: 'name', label: this.$t('name'), sortable: true},
+          {key: 'language', label: this.$t('language'), sortable: true},
+          {key: 'enabled', label: this.$t('enabled'), sortable: true},
+          {key: 'role', label: this.$t('role'), sortable: true},
+          {key: 'createdAt', label: this.$t('created'), sortable: true},
+          {key: 'updatedAt', label: this.$t('updated'), sortable: true},
+          {key: 'loggedAt', label: this.$t('logged'), sortable: true},
+          {key: 'actions', label: this.$t('actions'), thStyle: 'width: 140px;'}
         ],
         items: [],
         perPage: 50,
@@ -124,7 +137,7 @@
         this.$root.$emit('bv::show::modal','editUser')
       },
       removeUser(user) {
-        if (confirm('Do you really want to remove user "'+user.username+'"?')) {
+        if (confirm(this.$t('confirms.remove_user', {username: user.username}))) {
           this.$store.dispatch('user/remove', {id: user.id})
             .then(
               () => this.fetch()
