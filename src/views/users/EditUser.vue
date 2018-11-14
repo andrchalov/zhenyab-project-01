@@ -2,32 +2,49 @@
   <b-modal ref="modal" id="editUser" :title="title" @shown="shown" @ok="ok" @hidden="hidden">
     <b-form @submit="submit" @reset="reset">
       <b-form-group label="Username:">
-        <b-form-input type="text" v-model="form.username"></b-form-input>
+        <b-form-input type="text" v-model="form.username" :state="errors && !errors['username']"></b-form-input>
+        <b-form-invalid-feedback v-if="errors">
+          {{errors['username']}}
+        </b-form-invalid-feedback>
       </b-form-group>
       <b-form-group label="Password:">
-        <b-form-input type="password" v-model="form.password"></b-form-input>
+        <b-form-input type="password" v-model="form.password" :state="errors && !errors['password']"></b-form-input>
+        <b-form-invalid-feedback v-if="errors">
+          {{errors['password']}}
+        </b-form-invalid-feedback>
       </b-form-group>
       <b-form-group label="Name:">
-        <b-form-input type="text" v-model="form.name"></b-form-input>
+        <b-form-input type="text" v-model="form.name" :state="errors && !errors['name']"></b-form-input>
+        <b-form-invalid-feedback v-if="errors">
+          {{errors['name']}}
+        </b-form-invalid-feedback>
       </b-form-group>
       <b-form-group label="Locale:">
-        <b-form-select v-model="form.locale" :options="localeOptions" class="mb-3" />
+        <b-form-select :plain="true" size="lg" v-model="form.locale" :options="localeOptions" class="mb-3"  :state="errors && !errors['locale']"/>
+        <b-form-invalid-feedback v-if="errors">
+          {{errors['locale']}}
+        </b-form-invalid-feedback>
       </b-form-group>
-
-      <b-form-group label="Expired at:">
-        <datepicker v-model="expiredAtDate" format="yyyy-MM-dd" style="width: 200px;"></datepicker>
-      </b-form-group>
-      <b-form-group label="Devices amount:">
-        <b-form-input type="number" v-model="form.amount" style="width: 200px"></b-form-input>
-      </b-form-group>
-      <b-form-group label="Blocked:">
+      <b-form-group label="Enabled:">
         <b-form-checkbox
-           v-model="form.isEnabled"
-           value="false"
-           unchecked-value="true">
+           v-model="form.enabled"
+           value="true"
+           unchecked-value="false">
         </b-form-checkbox>
       </b-form-group>
-      <span class="text-danger" v-if="error">{{error}}</span>
+      <b-form-group label="Role:">
+        <b-form-select :plain="true" size="lg" v-model="form.role" :options="roleOptions" class="mb-3" />
+      </b-form-group>
+
+      <span class="text-danger" v-if="message">
+        {{message}}
+      </span>
+
+      <span class="text-danger" v-if="errors">
+        <li v-for="error in errors">
+          {{error}}
+        </li>
+      </span>
     </b-form>
   </b-modal>
 </template>
@@ -40,7 +57,6 @@
   export default {
     props: {
       accountId: {
-        type: String,
         required: true
       },
       user: {
@@ -54,16 +70,23 @@
     data() {
       return {
         form: {
+          username: null,
+          password: null,
           name: null,
-          expiredAt: null,
-          amount: 0,
-          isEnabled: true
+          locale: 2,
+          enabled: true,
+          role: 'ROLE_USER',
+          accountId: null
         },
-        expiredAtDate: null,
-        error: null,
+        message: null,
+        errors: null,
         localeOptions: [
-          { value: 'en', text: 'English' },
-          { value: 'ru', text: 'Russian' }
+          { value: 2, text: 'English' }
+        ],
+        roleOptions: [
+          { value: 'ROLE_SUPER', text: 'SUPER' },
+          { value: 'ROLE_ADMIN', text: 'ADMIN' },
+          { value: 'ROLE_USER', text: 'USER' }
         ]
       }
     },
@@ -72,15 +95,12 @@
         return this.user ? 'Edit user' : 'Add user'
       }
     },
-    created() {
-
-    },
     methods: {
       shown() {
-        if (this.account) {
-          Object.assign(this.form, this.account)
-          this.expiredAtDate = this.account.expiredAt
+        if (this.user) {
+          Object.assign(this.form, this.user)
         }
+        this.form.accountId = this.accountId
       },
       ok(evt) {
         evt.preventDefault()
@@ -88,23 +108,33 @@
       },
       hidden() {
         this.reset()
+        this.$emit('closed')
       },
       submit() {
-        this.error = null
-        this.form.expiredAt = Vue.moment(this.expiredAtDate).format('YYYY-MM-DD')
+        this.errors = null
 
         this
           .sendForm()
           .then(
             () => {
-              this.$store.dispatch('user/fetch')
               this.$refs.modal.hide()
             },
-            (error) => this.error = error.response.data.message
+            (error) => {
+              this.errors = null
+
+              if (error.response.data.errors) {
+                this.errors = {}
+                error.response.data.errors.forEach((error) => {
+                  this.errors[Object.keys(error)[0]] = Object.values(error)[0]
+                })
+              }
+
+              this.message = error.response.data.message
+            }
           )
       },
       sendForm() {
-        if (this.account) {
+        if (this.user) {
           return this.$store.dispatch('user/edit', this.form)
         } else {
           return this.$store.dispatch('user/add', this.form)

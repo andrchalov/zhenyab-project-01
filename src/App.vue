@@ -1,20 +1,19 @@
 <template>
-  <div>
-    <div v-if="loaded">
-      <router-view></router-view>
-    </div>
-  </div>
+  <router-view></router-view>
 </template>
 
 <script>
-export default {
-  name: 'app',
-  data() {
-    return {
-      loaded: true
+  import router from './router'
+
+  export default {
+    name: 'app',
+    router,
+    computed: {
+      accessToken() {
+        return this.$store.getters['auth/accessToken']
+      }
     }
   }
-}
 </script>
 
 <style lang="scss">

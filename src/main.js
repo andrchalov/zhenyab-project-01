@@ -7,7 +7,6 @@ import 'core-js/es7/array'
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
 import App from './App'
-import router from './router'
 import store from './store'
 import Notify from 'vue2-notify'
 
@@ -18,10 +17,12 @@ Vue.use(require('vue-moment'));
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  router,
   store,
   template: '<App/>',
   components: {
     App
+  },
+  created() {
+    this.$store.commit('auth/LOAD')
   }
 })

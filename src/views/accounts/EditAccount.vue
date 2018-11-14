@@ -12,7 +12,7 @@
       </b-form-group>
       <b-form-group label="Blocked:">
         <b-form-checkbox
-           v-model="form.isEnabled"
+           v-model="form.enabled"
            value="false"
            unchecked-value="true">
         </b-form-checkbox>
@@ -47,7 +47,7 @@ export default {
         name: null,
         expiredAt: null,
         amount: 0,
-        isEnabled: true
+        enabled: true
       },
       expiredAtDate: null,
       error: null
@@ -57,9 +57,6 @@ export default {
     title() {
       return this.account ? 'Edit account' : 'Add account'
     }
-  },
-  created() {
-
   },
   methods: {
     shown() {

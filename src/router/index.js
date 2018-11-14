@@ -21,7 +21,10 @@ const router = new Router({
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: Login,
+      meta: {
+        guest: true
+      }
     },
     {
       path: '/',
@@ -31,16 +34,28 @@ const router = new Router({
       children: [
         {
           path: 'accounts',
-          name: 'Accounts',
-          component: Accounts,
-          meta: {
-            requiresAuth: true
-          }
-        },
-        {
-          path: '/account/:account_id/users',
-          name: 'Users',
-          component: Users
+          meta: { label: 'Accounts'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: Accounts,
+              meta: {
+                requiresAuth: true
+              }
+            },
+            {
+              path: ':account_id/users',
+              name: 'Users',
+              component: Users,
+              meta: {
+                label: 'Users',
+                requiresAuth: true
+              },
+            }
+          ]
         }
       ]
     }
@@ -49,16 +64,17 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   if(to.matched.some(record => record.meta.requiresAuth)) {
-    if (store.state.accessToken == null) {
-      next({ path: '/login' })
+    if (!store.getters['auth/accessToken']) {
+      next({ name: 'Login' })
     } else {
       next()
     }
   } else if(to.matched.some(record => record.meta.guest)) {
-    if(store.state.accessToken == null){
+    console.log(store.getters['auth/accessToken'])
+    if(!store.getters['auth/accessToken']){
       next()
     } else {
-      next({ name: 'Accounts'})
+      next({ path: '/accounts'})
     }
   } else {
     next()

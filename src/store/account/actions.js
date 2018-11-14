@@ -1,34 +1,34 @@
 import axios from 'axios'
 
-const fetch = ({commit}) => {
-  return axios.get('/account')
-    .then(
-      response => {
-        commit('LIST_UPDATED', response.data)
-      }
-    )
-}
-
-const add = ({dispatch}, data) => {
-  return axios.post('/account', data)
-    .then(
-      response => {
-        dispatch('fetch')
-      }
-    )
-}
-
-const edit = ({dispatch}, data) => {
-  return axios.put('/account', data)
-    .then(
-      response => {
-        dispatch('fetch')
-      }
-    )
-}
-
 export default {
-  fetch,
-  add,
-  edit
+  fetch({commit}) {
+    return axios.get('/account')
+      .then(
+        response => {
+          response.data.forEach((value, key) => {
+            if (!value.enabled) {
+              value['_rowVariant'] = 'danger'
+            }
+          })
+
+          commit('LIST_UPDATED', response.data)
+        }
+      )
+  },
+  add({dispatch}, data) {
+    return axios.post('/account', data)
+      .then(
+        response => {
+          dispatch('fetch')
+        }
+      )
+  },
+  edit({dispatch}, data) {
+    return axios.put('/account', data)
+      .then(
+        response => {
+          dispatch('fetch')
+        }
+      )
+  }
 }

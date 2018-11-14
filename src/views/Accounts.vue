@@ -22,6 +22,7 @@
         :current-page="currentPage"
         :per-page="perPage"
         :sort-by.sync="sortBy"
+        :striped="true"
         :filter="filterHandler"
         @row-clicked="rowClicked"
         hover
@@ -44,7 +45,7 @@
 
 <script>
   import EditAccount from './accounts/EditAccount'
-  
+
   export default {
     name: 'Accounts',
     components: {

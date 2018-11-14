@@ -8,6 +8,16 @@
       </b-link>
       <SidebarToggler class="d-md-down-none" display="lg" />
       <b-navbar-nav class="ml-auto">
+        <b-btn
+          @click="logout"
+          class="mr-5"
+          variant="secondary"
+          size="sm"
+          v-b-tooltip.hover
+          title="Logout"
+        >
+          <i class="fa fa-sign-out fa-lg"></i>
+        </b-btn>
       </b-navbar-nav>
     </AppHeader>
     <div class="app-body">
@@ -70,6 +80,11 @@ export default {
     },
     list () {
       return this.$route.matched.filter((route) => route.name || route.meta.label )
+    }
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('auth/logout')
     }
   }
 }
