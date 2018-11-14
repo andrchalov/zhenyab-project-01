@@ -25,6 +25,8 @@
         :striped="true"
         :filter="filterHandler"
         @row-clicked="rowClicked"
+        responsive
+        fixed
         hover
       >
         <template slot="enabled" slot-scope="data">

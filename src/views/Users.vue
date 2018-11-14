@@ -31,8 +31,8 @@
         :sort-by.sync="sortBy"
         :striped="true"
         :filter="filterHandler"
-        responsive="true"
-        fixed="true"
+        responsive
+        fixed
         hover
       >
         <template slot="enabled" slot-scope="data">
@@ -47,6 +47,9 @@
               <i class="fa fa-remove fa-lg"></i>
             </b-btn>
           </div>
+        </template>
+        <template slot="role" slot-scope="data">
+          {{$t(data.value)}}
         </template>
       </b-table>
 
@@ -88,7 +91,7 @@
           {key: 'createdAt', label: this.$t('created'), sortable: true},
           {key: 'updatedAt', label: this.$t('updated'), sortable: true},
           {key: 'loggedAt', label: this.$t('logged'), sortable: true},
-          {key: 'actions', label: this.$t('actions'), thStyle: 'width: 140px;'}
+          {key: 'actions', label: this.$t('actions'), thStyle: 'width: 100px;'}
         ],
         items: [],
         perPage: 50,

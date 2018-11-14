@@ -25,6 +25,9 @@ no: "Нет"
 password: "Пароль"
 prev_short: "Пред."
 reset: "Сброс"
+ROLE_ADMIN: "АДМИН"
+ROLE_SUPER: "СУПЕР-ПОЛЬЗОВАТЕЛЬ"
+ROLE_USER: "ПОЛЬЗОВАТЕЛЬ"
 role: "Роль"
 save: "Сохранить"
 signin_to_account: "Войдите в свой аккаунт"
@@ -32,6 +35,7 @@ updated: "Обновлен"
 username: "Имя пользователя"
 users: "Пользователи"
 yes: "Да"
+
 
 confirms:
   remove_user: 'Вы действительно хотите удалить пользователя "{username}"?'

@@ -28,9 +28,19 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response.status === 401) {
-      store.dispatch('auth/logout')
+    console.log(error)
+
+    switch(error.response.status) {
+      case 401:
+        store.dispatch('auth/logout')
+        break;
+      case 500:
+        Vue.$notify('Internal server error', 'error')
+      default:
+        // do nothing
     }
+
+    return Promise.reject(error);
   }
 )
 

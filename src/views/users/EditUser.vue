@@ -90,7 +90,8 @@
         message: null,
         errors: null,
         localeOptions: [
-          { value: 2, text: 'English' }
+          { value: 1, text: 'Русский' },
+          { value: 2, text: 'English (Great Britain)' }
         ],
         roleOptions: [
           { value: 'ROLE_SUPER', text: 'SUPER' },
